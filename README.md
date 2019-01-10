@@ -11,77 +11,88 @@ What things you need to install the software and how to install them
 
 ```
 python3.7
-
+Google Chrome or Mozilla Firefox (in latest version)
 ```
 
 ### Installing
 
 A step by step series of examples that tell you how to get a development env running
 
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
+First, install python modules requirements
+```bash
+pip3 install -r requirements.txt
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
+Verify that all is ok by launching this testing command
+```bash
+python3 test_install.py
 ```
-Give an example
+If all is ok, you will get this : "Your installation is ok! =)" \
+If you don't have this, some modules are not installed as wished. \
+To correct this, try reinstall all modules indicated in this format:
+```
+ModuleNotFoundError: No module named '<module_to_reinstall>'
+```
+by typing this command:
+```bash
+pip install <module_to_reinstall>
+pip3 install <module_to_reinstall>
+```
+If after these lines, you still with the same error, please search on Google how to resolve this. \
+Indeed, some modules are particularly capricious and need to be treated case by case...
+
+## Using
+
+This section will help you using the tool to capture your dataset and export landmarks of your videos.
+
+### Record a video
+First, you will need to record at least one video (or using some video available in datasets directory if you don't have a webcam).\
+To record your video, go to acquisition directory and open index.html file in your browser (Google Chrome or Mozilla Firefox are compatible).\
+Then, click on "Start camera" button to allow your browser access your webcam and your microphone.\
+Pressed "Start Recording" button to launch a new recording and on the same button called at this moment "Stop Recording" to stop your video.\
+Finally, click on "Download" button to download your video and save it into datasets directory, in a sub-folder called with your name.
+
+Now, you have your video in webm format! =)
+
+### Show helping section
+To show the helping section on how using tool when you have a video, simply use the following command:
+```bash
+python3 app.py --help
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
-
+### Extract landmarks from your video
+To extract landmarks from one of your video, simply type the following command:
+```bash
+python3 app.py extract video shapefaciallandmarks --normaux datasets/Gwendal/test.webm extract/normaux/ --verbose
 ```
-Give an example
-```
+Some information are important on this command:
+* extract : indicate that you want to extract landmarks
+* shapefaciallandmarks : indicate that you want to generate pictures with landmarks on it to verify that all is ok
+* video : indicate that you use a video as source for landmarks detection
+* --normaux (or -n) : to indicate that you use a video with neutral expression
+* datasets/Gwendal/test.webm : path to your webm video
+* extract/normaux/ : path to save pictures and landmarks.csv file
+* --verbose (or -v) : to indicate that you want output printing in console
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+After some times of processing, if you looked the output directory, you will see two sub-folder: imagesCollection and stream.\
+The first contains all pictures with landmarks for each frame of your video.\
+The second contains a csv file with all landmarks used by scikit-learn to learn and predict. 
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+* [Python3.7](https://www.python.org) - A useful programing language for deep-learning
+* [OpenCV](https://opencv.org) - A library for detecting landmarks on picture
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Pierre Charpentier** - *Initial work*
+* **Julien Couillard** - *Initial work*
+* **Thomas Kermarrec** - *Initial work*
+* **Benjamin Morvan** - *Initial work*
+* **Gwendal Raballand** - *Refactoring and improvement work* - [Gwendal-R](https://github.com/Gwendal-R)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/Gwendal-R/facial-expression-recognition/contributors) who participated in this project.
 
 ## License
 
 This project is licensed under the GPL-3.0 License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
