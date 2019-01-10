@@ -1,0 +1,9 @@
+docopt
+dlib
+imutils
+numpy
+matplotlib
+scikit-learn
+pandas
+ipython
+opencv-contrib-python
