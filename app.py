@@ -21,7 +21,6 @@ Options:
     -v --verbose    Permet de lancer l'application en mode verbeux
 """
 
-
 if __name__ == "__main__":
     # Arguments
     arguments = docopt(command_help)
@@ -33,19 +32,23 @@ if __name__ == "__main__":
 
         if arguments['image_collection']:
             video = ExtractLandmarks(source_type='image_collection', file=arguments["<path>"],
-                                     save_repertory=arguments["<save_repertory>"], verbose=arguments['--verbose'])
+                                     save_repertory=arguments["<save_repertory>"], verbose=arguments['--verbose'],
+                                     shapefaciallandmarks=arguments['shapefaciallandmarks'])
         elif arguments['video']:
             video = ExtractLandmarks(source_type='video', file=arguments["<file>"],
-                                     save_repertory=arguments["<save_repertory>"], verbose=arguments['--verbose'])
+                                     save_repertory=arguments["<save_repertory>"], verbose=arguments['--verbose'],
+                                     shapefaciallandmarks=arguments['shapefaciallandmarks'])
         else:
             assert "[ERREUR] Impossible d'extraire si aucune source n'est fournie... (image_collection | video)"
 
         video.read_file(process_video.process_one_face_only)
 
         if arguments['--grimaces']:
-            video.save_stream('facial_landmarks', 0)
+            video.save_stream('facial_landmarks', opt=0, type='g')
+
         elif arguments['--normaux']:
-            video.save_stream('facial_landmarks', 1)
+            video.save_stream('facial_landmarks', opt=1, type='n')
+
         else:
             assert "[ERREUR] Merci de préciser si la source présente des grimaces ou des réactions neutres..."
 

@@ -8,9 +8,11 @@ from local_library.Frame import Frame
 
 
 class ExtractLandmarks:
-    def __init__(self, source_type, file, save_repertory, verbose=False):
+    def __init__(self, source_type, file, save_repertory, verbose=False, shapefaciallandmarks=False):
         self.source_type = source_type
         self.file = file
+        if save_repertory.endswith('/'):
+            save_repertory = save_repertory[:-1]
         self.save_repertory = save_repertory
         self.stream = {}
         self.verbose = verbose
@@ -18,35 +20,28 @@ class ExtractLandmarks:
         if self.verbose:
             print("\n----- Prepare architecture for files -----")
 
-        if os.path.isdir(self.save_repertory):
+        try:
+            if os.path.isdir(self.save_repertory):
+                if self.verbose:
+                    print("\tExport directory already exist, using it...")
+            else:
+                if self.verbose:
+                    print("\tCreate export directory")
+                subprocess.call(["mkdir", '-p', self.save_repertory])
+        except OSError as e:
             if self.verbose:
-                print("\tFiles exist... Cleaning directory content...")
-            subprocess.call(['rm', '-rf', self.save_repertory + '/'])
+                print(e)
+            pass
 
-        try:
-            if self.verbose:
-                print("\tCreate export directory")
-            subprocess.call(["mkdir", '-p', self.save_repertory])
-        except OSError as e:
-            if self.verbose:
-                print(e)
-            pass
-        try:
-            if self.verbose:
-                print("\tCreate export/imagesCollection directory")
-            subprocess.call(["mkdir", self.save_repertory + "/imagesCollection"])
-        except OSError as e:
-            if self.verbose:
-                print(e)
-            pass
-        try:
-            if self.verbose:
-                print("\tCreate export/stream directory")
-            subprocess.call(["mkdir", self.save_repertory + "/stream"])
-        except OSError as e:
-            if self.verbose:
-                print(e)
-            pass
+        if shapefaciallandmarks:
+            try:
+                if self.verbose:
+                    print("\tCreate export/imagesCollection directory")
+                subprocess.call(["mkdir", self.save_repertory + "/imagesCollection"])
+            except OSError as e:
+                if self.verbose:
+                    print(e)
+                pass
 
     def read_file(self, call):
         if self.source_type == "video":
@@ -96,10 +91,21 @@ class ExtractLandmarks:
 
         self.stream[stream] = self.stream[stream].append(data, ignore_index=True)
 
-    def save_stream(self, stream, opt):
-        if self.verbose:
-            print("\n----- Save landmarks into " + self.save_repertory + "stream/" + stream + ".csv" + " -----")
+    def save_stream(self, output_filename, opt, type):
+        tmp = pd.Series(np.repeat(opt, len(self.stream[output_filename])))
+        self.stream[output_filename]['Target'] = tmp.values
 
-        tmp = pd.Series(np.repeat(opt, len(self.stream[stream])))
-        self.stream[stream]['Target'] = tmp.values
-        self.stream[stream].to_csv(self.save_repertory + "/stream/" + stream + ".csv")
+        if type == 'g':
+            if self.verbose:
+                print("\n----- Save landmarks into " + self.save_repertory + '/' + output_filename + "_grimaces.csv" +
+                      " -----")
+            self.stream[output_filename].to_csv(self.save_repertory + '/' + output_filename + "_grimaces.csv")
+        elif type == 'n':
+            if self.verbose:
+                print("\n----- Save landmarks into " + self.save_repertory + '/' + output_filename + "_normaux.csv" +
+                      " -----")
+            self.stream[output_filename].to_csv(self.save_repertory + '/' + output_filename + "_normaux.csv")
+        else:
+            if self.verbose:
+                print("\n----- Save landmarks into " + self.save_repertory + '/' + output_filename + ".csv" + " -----")
+            self.stream[output_filename].to_csv(self.save_repertory + '/' + output_filename + ".csv")
