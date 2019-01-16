@@ -78,6 +78,10 @@ After some times of processing, if you looked the output directory, you will see
 The first contains all pictures with landmarks for each frame of your video.\
 The second contains a csv file with all landmarks used by scikit-learn to learn and predict. 
 
+```bash
+python3 app.py learn svm ./extract/normaux/stream/facial_landmarks.csv ./train.csv
+```
+
 ## Built With
 
 * [Python3.7](https://www.python.org) - A useful programing language for deep-learning

@@ -1,2 +1,3 @@
 .idea/*
 extract/*
+*/__pycache__/*

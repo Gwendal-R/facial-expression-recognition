@@ -1,6 +1,7 @@
 from docopt import docopt
 from local_library.ExtractLandmarks import ExtractLandmarks
 from local_library.ProcessVideo import ProcessVideo
+from local_library.MachineLearning import MachineLearning
 
 command_help = """
 Voici quelques informations sur comment utiliser cette application
@@ -48,7 +49,22 @@ if __name__ == "__main__":
             assert "[ERREUR] Merci de préciser si la source présente des grimaces ou des réactions neutres..."
 
     elif arguments['learn']:
-        assert "[ERREUR] Cette fonction n'est pas encore mise en place"
+        if arguments['<file_normal>']:
+            if arguments['<file_grimace>']:
+                ml = MachineLearning(arguments["<file_normal>"],
+                                     arguments["<file_grimace>"])
+            else:
+                ml = MachineLearning(arguments["<file_normal"])
+
+        if arguments["svm"]:
+            ml.svm_classifier()
+        else:
+            ml.gmm_classifier()
+
+        ml.save_clf()
+        if arguments["<file_predict>"]:
+            print(["! Prediction :"])
+            ml.predict(arguments["<file_predict>"])
 
     elif arguments['predict']:
         assert "[ERREUR] Cette fonction n'est pas encore mise en place"
