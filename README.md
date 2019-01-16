@@ -63,24 +63,52 @@ python3 app.py --help
 ### Extract landmarks from your video
 To extract landmarks from one of your video, simply type the following command:
 ```bash
-python3 app.py extract video shapefaciallandmarks --normaux datasets/Gwendal/test.webm extract/normaux/ --verbose
+python3 app.py extract video shapefaciallandmarks --normaux datasets/Gwendal/normal.webm extract/gwendal/ --verbose
 ```
 Some information are important on this command:
-* extract : indicate that you want to extract landmarks
-* shapefaciallandmarks : indicate that you want to generate pictures with landmarks on it to verify that all is ok
-* video : indicate that you use a video as source for landmarks detection
-* --normaux (or -n) : to indicate that you use a video with neutral expression
-* datasets/Gwendal/test.webm : path to your webm video
-* extract/normaux/ : path to save pictures and landmarks.csv file
-* --verbose (or -v) : to indicate that you want output printing in console
+* extract: indicate that you want to extract landmarks
+* shapefaciallandmarks: indicate that you want to generate pictures with landmarks on it to verify that all is ok
+* video: indicate that you use a video as source for landmarks detection
+* --normaux (or -n): to indicate that you use a video with neutral expression
+* datasets/Gwendal/normal.webm: path to your webm video
+* extract/gwendal/: path to save pictures and landmarks.csv file
+* --verbose (or -v): to indicate that you want output printing in console
 
-After some times of processing, if you looked the output directory, you will see two sub-folder: imagesCollection and stream.\
-The first contains all pictures with landmarks for each frame of your video.\
-The second contains a csv file with all landmarks used by scikit-learn to learn and predict. 
+After some times of processing, if you looked the output directory, you will see a sub-folder: imagesCollection, and a file: facial_landmarks_grimaces.csv.\
+It contains all pictures with landmarks for each frame of your video.\
+The csv file contains all landmarks used by scikit-learn to learn and predict. 
 
+### Learn a landmark
+In order to apply a classifier (GMM or SVM) on the extracted landmarks, you need to use a command like the following:
 ```bash
-python3 app.py learn svm ./extract/normaux/stream/facial_landmarks.csv ./train.csv
+python3 app.py learn svm extract/gwendal/facial_landmarks_normaux.csv extract/gwendal/facial_landmarks_grimaces.csv
 ```
+Important information on this command are:
+* learn: indicate that you want to learn a dataset
+* svm: indicate that you want to use SVM classifier
+* extract/gwendal/facial_landmarks_normaux.csv: a "dataset" which contains normals landmarks
+* extract/gwendal/facial_landmarks_grimaces.csv: a "dataset" which contains grimaces landmarks
+
+After some times of processing, you will see a SVM.pkl file in the root folder of the project. This file contains the learned dataset.
+
+### Predict with a learned file
+In order to predict if a face is a grimace or a normal facial expression, you need to use one of the following command:
+```bash
+python3 app.py predict -g SVM.pkl dataset/Julien/grimace.webm
+```
+```bash
+python3 app.py predict -n SVM.pkl dataset/Julien/normal.webm
+```
+```bash
+python3 app.py predict -t GMM.pkl extract/julien/facial_landmarks_grimaces.csv
+```
+Here, important information are:
+* predict: indicate that you want to predict with a learned classifier
+* -g, -n, -t: indicate that you want to predict with a grimaces video, a normal video or test with an extracted landmarks
+* SVM.pkl, GMM.pkl: the learned classifier used to predict
+* dataset/Julien/grimace.webm: a video with grimaces
+* dataset/Julien/normal.webm: a video with normal faces
+* extract/julien/facial_landmarks_grimaces.csv: a dataset with already extracted landmarks
 
 ## Built With
 
@@ -94,6 +122,7 @@ python3 app.py learn svm ./extract/normaux/stream/facial_landmarks.csv ./train.c
 * **Thomas Kermarrec** - *Initial work*
 * **Benjamin Morvan** - *Initial work*
 * **Gwendal Raballand** - *Refactoring and improvement work* - [Gwendal-R](https://github.com/Gwendal-R)
+* **Julien Deroux** - *Improvement work* - [derouxj](https://github.com/derouxj)
 
 See also the list of [contributors](https://github.com/Gwendal-R/facial-expression-recognition/contributors) who participated in this project.
 
