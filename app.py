@@ -2,6 +2,7 @@ from docopt import docopt
 from local_library.ExtractLandmarks import ExtractLandmarks
 from local_library.ProcessVideo import ProcessVideo
 from local_library.MachineLearning import MachineLearning
+from local_library.MachineLearningTest import MachineLearningTest
 
 command_help = """
 Voici quelques informations sur comment utiliser cette application
@@ -67,7 +68,25 @@ if __name__ == "__main__":
             ml.predict(arguments["<file_predict>"])
 
     elif arguments['predict']:
-        assert "[ERREUR] Cette fonction n'est pas encore mise en place"
+        if arguments['<file_clf>'] and arguments['<file_content>']:
+            extract_data = None
+            number = None
+            if arguments['--grimaces']:
+                extract_data = True
+                number = 0
+            elif arguments['--normaux']:
+                extract_data = True
+                number = 1
+            elif arguments['--tests']:
+                extract_data = False
+                number = -1
+            else:
+                assert "[ERREUR] Merci de préciser une fonction de prédiction (grimaces | normaux | tests)"
+
+            MachineLearningTest(arguments["<file_clf>"], arguments['<file_content>'], number, extract_data,
+                                arguments['--verbose'])
+        else:
+            assert "[ERREUR] Merci de préciser un fichier de données classifiées et un fichier de contenu..."
 
     else:
         assert "[ERREUR] Aucune fonctionnalité choisie... (extract | learn | predict)"

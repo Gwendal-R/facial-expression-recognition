@@ -98,7 +98,7 @@ class ExtractLandmarks:
 
     def save_stream(self, stream, opt):
         if self.verbose:
-            print("\n----- Save landmarks into " + self.save_repertory + "/stream/" + stream + ".csv" + " -----")
+            print("\n----- Save landmarks into " + self.save_repertory + "stream/" + stream + ".csv" + " -----")
 
         tmp = pd.Series(np.repeat(opt, len(self.stream[stream])))
         self.stream[stream]['Target'] = tmp.values

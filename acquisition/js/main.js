@@ -22,6 +22,7 @@ let sourceBuffer;
 const errorMsgElement = document.querySelector('span#errorMsg');
 const recordedVideo = document.querySelector('video#recorded');
 const recordButton = document.querySelector('button#record');
+const startButton = document.querySelector('button#start');
 recordButton.addEventListener('click', () => {
   if (recordButton.textContent === 'Start Recording') {
     startRecording();
@@ -135,15 +136,23 @@ async function init(constraints) {
 }
 
 document.querySelector('button#start').addEventListener('click', async () => {
-  const hasEchoCancellation = document.querySelector('#echoCancellation').checked;
-  const constraints = {
-    audio: {
-      echoCancellation: {exact: hasEchoCancellation}
-    },
-    video: {
-      width: 1280, height: 720
-    }
-  };
-  console.log('Using media constraints:', constraints);
-  await init(constraints);
+  if(startButton.textContent === "Start camera"){
+    const hasEchoCancellation = document.querySelector('#echoCancellation').checked;
+    const constraints = {
+      audio: {
+        echoCancellation: {exact: hasEchoCancellation}
+      },
+      video: {
+        width: 1280, height: 720
+      }
+    };
+    console.log('Using media constraints:', constraints);
+    await init(constraints);
+    startButton.textContent = 'Stop Camera';
+  }else{
+    let track = stream.getTracks();
+    track[0].stop();
+    track[1].stop();
+    startButton.textContent = 'Start Camera';
+  }
 });
