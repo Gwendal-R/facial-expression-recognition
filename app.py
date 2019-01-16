@@ -55,7 +55,7 @@ if __name__ == "__main__":
                 ml = MachineLearning(arguments["<file_normal>"],
                                      arguments["<file_grimace>"])
             else:
-                ml = MachineLearning(arguments["<file_normal"])
+                ml = MachineLearning(arguments["<file_normal>"])
 
         if arguments["svm"]:
             ml.svm_classifier()
