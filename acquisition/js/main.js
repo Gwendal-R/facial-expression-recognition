@@ -148,11 +148,11 @@ document.querySelector('button#start').addEventListener('click', async () => {
     };
     console.log('Using media constraints:', constraints);
     await init(constraints);
-    startButton.textContent = 'Stop Camera';
+    startButton.textContent = 'Stop camera';
   }else{
     let track = stream.getTracks();
     track[0].stop();
     track[1].stop();
-    startButton.textContent = 'Start Camera';
+    startButton.textContent = 'Start camera';
   }
 });
