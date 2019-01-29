@@ -53,12 +53,13 @@ if __name__ == "__main__":
             assert "[ERREUR] Merci de préciser si la source présente des grimaces ou des réactions neutres..."
 
     elif arguments['learn']:
-        if arguments['<file_normal>']:
-            if arguments['<file_grimace>']:
-                ml = MachineLearning(arguments["<file_normal>"],
-                                     arguments["<file_grimace>"])
+        if arguments["<file_normal>"]:
+            if arguments["<file_grimace>"]:
+                ml = MachineLearning(arguments["<file_normal>"], arguments["<file_grimace>"])
             else:
                 ml = MachineLearning(arguments["<file_normal>"])
+        else:
+            assert"[ERREUR] Merci de préciser un chemin pour le fichier de facialLandmarks"
 
         if arguments["svm"]:
             ml.svm_classifier()
@@ -66,9 +67,9 @@ if __name__ == "__main__":
             ml.gmm_classifier()
 
         ml.save_clf()
-        if arguments["<file_predict>"]:
-            print(["! Prediction :"])
-            ml.predict(arguments["<file_predict>"])
+        if(arguments["<file_predict>"]):
+            print("[!] Prediction : ")
+        ml.predict(arguments["<file_predict>"])
 
     elif arguments['predict']:
         if arguments['<file_clf>'] and arguments['<file_content>']:

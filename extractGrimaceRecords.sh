@@ -39,18 +39,18 @@ fi
 for j in ${!personnes[@]}
 do
 	if [ "${personnes[$j]}" -eq 1 ]; then
-		n=$(ls datasets/$j/normal_records | wc -l)
+		n=$(ls datasets/$j/grimace_records | wc -l)
 
-		for i in $(ls datasets/$j/normal_records)
+		for i in $(ls datasets/$j/grimace_records)
 		do
 			echo "VIDEOS ARE BEING TREATED, THERE ARE $n LEFT"
 			rm -r datasets/$j/record
-			python3 app.py extract video --normaux shapefaciallandmarks datasets/$j/normal_records/$i datasets/$j/record -v
-			mv datasets/$j/record/facial_landmarks_normaux.csv datasets/$j/csv/normal_record_$n.csv
+			python3 app.py extract video --grimaces shapefaciallandmarks datasets/$j/grimace_records/$i datasets/$j/record -v
+			mv datasets/$j/record/facial_landmarks_grimaces.csv datasets/$j/csv/grimace_record_$n.csv
 
             #Adding a Grimace column at the end of the lines
-			sed -i '1 s/.*/&,Grimace/' datasets/$j/csv/normal_record_$n.csv
-			sed -i 's/^[0-9].*$/&,0/g' datasets/$j/csv/normal_record_$n.csv
+			sed -i '1 s/.*/&,Grimace/' datasets/$j/csv/grimace_record_$n.csv
+			sed -i 's/^[0-9].*$/&,1/g' datasets/$j/csv/grimace_record_$n.csv
 
 			let n=n-1
 		done
