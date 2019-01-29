@@ -8,7 +8,7 @@ command_help = """
 Voici quelques informations sur comment utiliser cette application
 
 Usage:
-    app.py extract video [shapefaciallandmarks] [-g | -n] <file> <save_repertory> [-v]
+    app.py extract video [shapefaciallandmarks] (-g | -n) <file> <save_repertory> [-v]
     app.py extract image_collection [shapefaciallandmarks] [-g | -n] <path> <save_repertory> [-v]
     app.py learn (gmm | svm) <file_normal> [<file_grimace>] [<file_predict>] [-v]
     app.py predict (-g | -n | -t) <file_clf> <file_content> [-v]
