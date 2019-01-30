@@ -26,7 +26,7 @@ with open("testDataset.csv") as testFile:
 		X_test.append(l)
 		Y_test.append(row[139])
 
-clf = svm.SVC(gamma='scale')
+clf = svm.SVC(gamma='scale', kernel='poly', degree=1)
 clf.fit(X_training,Y_training)
 Pred = clf.predict(X_test)
 s = 0.

@@ -15,21 +15,23 @@ dataset = []
 for row in completeDataset:
     dataset.append(row)
 
-n = len(dataset) - 1
+n = len(dataset)
 i = 0
 
 while n > 0:
 	if i < 0.65*len(dataset):
-		rand = randint(0,n)
+		rand = randint(0,n-1)
 		trainingDataset.writerow(dataset[rand])
 		del dataset[rand]
 	elif i >= 0.65*len(dataset) and i < 0.75*len(dataset):
-		rand = randint(0,n)
+		rand = randint(0,n-1)
 		devDataset.writerow(dataset[rand])
 		del dataset[rand]
 	else:
-		rand = randint(0,n)
+		rand = randint(0,n-1)
 		testDataset.writerow(dataset[rand])
 		del dataset[rand]
 	n -= 1
 	i += 1
+
+
