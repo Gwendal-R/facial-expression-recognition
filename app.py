@@ -25,7 +25,7 @@ if __name__ == "__main__":
     # Arguments
     arguments = docopt(command_help)
 
-    # Main
+    # Maindata
     if arguments['extract']:
         video = None
         process_video = ProcessVideo(extract_shape_facial_landmarks=arguments['shapefaciallandmarks'])

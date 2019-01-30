@@ -93,7 +93,7 @@ Important information on this command are:
 Apply a classifier on the extracted landmarks 
 
 ```bash
-python3 app.py learn svm ./extract/normaux/stream/facial_landmarks.csv ./extract/grimaces/stream/facial_landmarks.csv
+python3 app.py learn svm ./extract/normaux/stream/facial_landmarks.csv ./extract/grimaces/stream/facial_landmarks.csv 
 ```
 After some times of processing, you will see a SVM.pkl file in the root folder of the project. This file contains the learned dataset.
 
