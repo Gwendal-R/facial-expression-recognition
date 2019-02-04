@@ -10,7 +10,7 @@ Voici quelques informations sur comment utiliser cette application
 Usage:
     app.py extract video [shapefaciallandmarks] (-g | -n) <file> <save_repertory> [-v]
     app.py extract image_collection [shapefaciallandmarks] [-g | -n] <path> <save_repertory> [-v]
-    app.py learn (gmm | svm | knnr) <file_normal> [<file_grimace>] [<file_predict>] [-v]
+    app.py learn (gmm | svm | knnr) <file_normal_grimaces> [-v]
     app.py predict (-g | -n | -t) <file_clf> <file_content> [-v]
 
 Options:
@@ -53,27 +53,21 @@ if __name__ == "__main__":
             assert "[ERREUR] Merci de préciser si la source présente des grimaces ou des réactions neutres..."
 
     elif arguments['learn']:
-        if arguments["<file_normal>"]:
-            if arguments["<file_grimace>"]:
-                ml = MachineLearning(arguments["<file_normal>"], arguments["<file_grimace>"])
+        if arguments["<file_normal_grimaces>"]:
+            ml = MachineLearning(arguments["<file_normal_grimaces>"])
+
+            if arguments["svm"]:
+                ml.svm_classifier()
+            elif arguments["gmm"]:
+                ml.gmm_classifier()
+            # elif arguments["knnr"]:
+                # ml.knnr_classifier()
             else:
-                ml = MachineLearning(arguments["<file_normal>"])
+                assert "[ERREUR] Merci de préciser un type de classifier (gmm | svm | knnr)"
+
+            ml.save_clf()
         else:
             assert"[ERREUR] Merci de préciser un chemin pour le fichier de facialLandmarks"
-
-        if arguments["svm"]:
-            ml.svm_classifier()
-        elif arguments["gmm"]:
-            ml.gmm_classifier()
-        elif arguments["knnr"]:
-            ml.knnr_classifier()
-        else:
-            assert "[ERREUR] Merci de préciser un type de classifier (gmm | svm | knnr)"
-
-        ml.save_clf()
-        if(arguments["<file_predict>"]):
-            print("[!] Prediction : ")
-            ml.predict(arguments["<file_predict>"])
 
     elif arguments['predict']:
         if arguments['<file_clf>'] and arguments['<file_content>']:
