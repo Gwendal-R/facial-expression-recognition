@@ -75,7 +75,8 @@ class MachineLearning:
         self.learning()
 
     def learning(self):
-        grid = GridSearchCV(self.clf, param_grid = self.param_grid, cv = self.cv, scoring = self.scoring, refit="accuracy_macro_score")
+        grid = GridSearchCV(self.clf, param_grid=self.param_grid, cv=self.cv, scoring=self.scoring,
+                            refit="accuracy_macro_score")
 
         self.tree = grid.fit(self.x_train, self.y_train)
 
@@ -86,7 +87,7 @@ class MachineLearning:
         return self.tree, self.clf
 
     def save_clf(self):
-        with open(self.name+'.pkl', 'wb') as fid:
+        with open(self.name + '.pkl', 'wb') as fid:
             pickle.dump(self.tree, fid)
 
     def predict(self, file):
@@ -100,5 +101,4 @@ class MachineLearning:
         confusion = metrics.confusion_matrix(predict_data_y, predictions)
         print(confusion)
         accuracy = metrics.accuracy_score(predict_data_y, predictions, normalize=True)
-        print("Result for accuracy : "+str(accuracy))
-
+        print("Result for accuracy : " + str(accuracy))
