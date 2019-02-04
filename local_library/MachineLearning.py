@@ -7,6 +7,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn import svm
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.mixture import GaussianMixture
+from sklearn.neighbors import KNeighborsRegressor
 from sklearn.model_selection import GridSearchCV
 
 
@@ -70,6 +71,24 @@ class MachineLearning:
         tol = [0.01, 0.001, 0.0001, 0.00001, 0.000001, 0.0000001]
         self.param_grid = dict(n_components=n_components,
                                covariance_type=covar_type, tol=tol)
+        self.cv = StratifiedShuffleSplit(n_splits=5, test_size=0.33,
+                                         random_state=0)
+        self.learning()
+
+    def knnr_classifier(self):
+        """Utilisation du classifier KNeighborsRegressor de sklearn  :
+        https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsRegressor.html
+        """
+        self.name = "KNNR"
+        self.clf = KNeighborsRegressor()
+
+        n_neighbors = [i for i in range(2, 5)]
+        weights = ['uniform', 'distance']
+        algorithm = ['auto', 'ball_tree', 'kd_tree', 'brute']
+        leaf_size = [i for i in range(5, 20)]
+        self.param_grid = dict(n_neighbors=n_neighbors, weights=weights,
+                               algorithm=algorithm, leaf_size=leaf_size)
+
         self.cv = StratifiedShuffleSplit(n_splits=5, test_size=0.33,
                                          random_state=0)
         self.learning()
