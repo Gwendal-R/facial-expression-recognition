@@ -75,19 +75,21 @@ class MachineLearning:
                                          random_state=0)
         self.learning()
 
-    def knn_regressor_classifier(self):
+    def knnr_classifier(self):
         """Utilisation du classifier KNeighborsRegressor de sklearn  :
         https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsRegressor.html
         """
         self.name = "KNNR"
         self.clf = KNeighborsRegressor()
 
-        self.param_grif = dict(n_neighbors=5, weights='uniform',
-                               algorithm='auto', leaf_size=10, p=2,
-                               metric='minkowski', metric_params=None,
-                               n_jobs=None)
+        n_neighbors = [i for i in range(2, 5)]
+        weights = ['uniform', 'distance']
+        algorithm = ['auto', 'ball_tree', 'kd_tree', 'brute']
+        leaf_size = [i for i in range(5, 20)]
+        self.param_grid = dict(n_neighbors=n_neighbors, weights=weights,
+                               algorithm=algorithm, leaf_size=leaf_size)
 
-        self.cv = StratifiedShuffleSplit(nsplits=5, test_size=0.20,
+        self.cv = StratifiedShuffleSplit(n_splits=5, test_size=0.33,
                                          random_state=0)
         self.learning()
 
